@@ -25,7 +25,7 @@ public class SortedBucketTest {
         bucket.put("4", "four");
         bucket.put("2", "two");
         
-        assertThat(bucket.values(), is(new Object[]{"one","two","three", "four"}));
+        assertThat(bucket.values(), is(arrayOf("one", "two", "three", "four")));
     }
 
     @Test
@@ -42,9 +42,33 @@ public class SortedBucketTest {
         bucket.put("4", "four");
         bucket.put("2", "two");
 
-        assertThat(bucket.values(), is(new Object[]{"one","two","three", "four", "five"}));
+        assertThat(bucket.values(), is(arrayOf("one","two","three", "four", "five")));
 
     }
+
+    @Test
+    public void shouldReturnValuesInRangeByKey() {
+        SortedBucket<String, String> bucket = bucketOfSize(1);
+        bucket.put("3", "three");
+        bucket.put("5", "five");
+        bucket.put("2", "two");
+        bucket.put("6", "six");
+        bucket.put("4", "four");
+        assertThat(bucket.valuesBetween("3", "6"), is(arrayOf("three", "four", "five", "six")));
+        assertThat(bucket.valuesBetween("1", "6"), is(arrayOf("two","three", "four", "five", "six")));
+        assertThat(bucket.valuesBetween("1", "7"), is(arrayOf("two","three", "four", "five", "six")));
+        assertThat(bucket.valuesBetween("5", "7"), is(arrayOf("five", "six")));
+        assertThat(bucket.valuesBetween("6", "7"), is(arrayOf( "six")));
+        assertThat(bucket.valuesBetween("1", "2"), is(arrayOf( "two")));
+        assertThat(bucket.valuesBetween("0", "1"), is(arrayOf()));
+        assertThat(bucket.valuesBetween("7", "8"), is(arrayOf()));
+
+    }
+
+    private Object[] arrayOf(Object...values) {
+        return values;
+    }
+
     private SortedBucket<String, String> bucketOfSize(int size) {
         return new SortedBucket<String, String>(size);
     }

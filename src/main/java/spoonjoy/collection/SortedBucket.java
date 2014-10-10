@@ -10,7 +10,8 @@ public class SortedBucket<K extends Comparable, V> {
     }
 
     public boolean put(K key, V value) {
-        if(mappings[mappings.length-1] != null) resize();
+        //TODO use binary tree to store mappings
+        if (mappings[mappings.length - 1] != null) resize();
         int index = 0;
         while (mappings[index] != null) {
             if (mappings[index].keyEquals(key)) {
@@ -32,7 +33,7 @@ public class SortedBucket<K extends Comparable, V> {
     }
 
     private void insert(Mapping item, int atIndex) {
-        for (int i =size(); i > atIndex; i--) {
+        for (int i = size(); i > atIndex; i--) {
             mappings[i] = mappings[i - 1];
         }
         mappings[atIndex] = item;
@@ -45,7 +46,7 @@ public class SortedBucket<K extends Comparable, V> {
     public Object[] values() {
         Object[] keys = new Object[size()];
         for (int i = 0; i < size(); i++) {
-            if(mappings[i] != null)keys[i] = (mappings[i].getValue());
+            if (mappings[i] != null) keys[i] = (mappings[i].getValue());
         }
         return keys;
     }
@@ -53,8 +54,33 @@ public class SortedBucket<K extends Comparable, V> {
     private int size() {
         //TODO : update size on adding element, don't calculate
         for (int i = 0; i < mappings.length; i++) {
-            if(mappings[i] == null) return i;
+            if (mappings[i] == null) return i;
         }
         return mappings.length;
+    }
+
+    public Object[] valuesBetween(K fromKey, K toKey) {
+        int fromIndex = mappings.length;
+        int toIndex = mappings.length;
+        for (int i = 0; i < size(); i++) {
+            if (!mappings[i].keyIsSmallerTo(fromKey) && i < fromIndex) {
+                fromIndex = i;
+            }
+            if (mappings[i].keyIsSmallerTo(toKey) || mappings[i].keyEquals(toKey)) {
+                toIndex = i;
+            }
+        }
+        return copyOfRange(mappings, fromIndex, toIndex);
+    }
+
+    private Object[] copyOfRange(Mapping[] mappings, int fromIndex, int toIndex) {
+        if (toIndex == mappings.length) return new Object[0];
+        if (toIndex < fromIndex) return new Object[0];
+
+        Object[] result = new Object[toIndex - fromIndex + 1];
+        for (int i = fromIndex; i <= toIndex; i++) {
+            result[i - fromIndex] = mappings[i].getValue();
+        }
+        return result;
     }
 }
