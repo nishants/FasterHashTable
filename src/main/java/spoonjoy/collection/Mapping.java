@@ -2,9 +2,11 @@ package spoonjoy.collection;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @Getter
+@ToString
 public class Mapping<K extends Comparable, V> {
     private K key;
     private V value;
