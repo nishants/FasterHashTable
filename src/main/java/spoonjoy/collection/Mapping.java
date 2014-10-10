@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class SMapping<K extends Comparable, V> {
+public class Mapping<K extends Comparable, V> {
     private K key;
     private V value;
 
@@ -13,11 +13,11 @@ public class SMapping<K extends Comparable, V> {
         return this.key.equals(key);
     }
 
-    public boolean hasSameKeyAs(SMapping that){
+    public boolean hasSameKeyAs(Mapping that){
         return this.key.equals(that.key);
     }
 
-    public boolean isLessThan(SMapping that){
+    public boolean isLessThan(Mapping that){
         return this.key.compareTo(that.key) < 0;
     }
 
