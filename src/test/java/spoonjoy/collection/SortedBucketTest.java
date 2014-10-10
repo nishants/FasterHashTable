@@ -80,6 +80,22 @@ public class SortedBucketTest {
         assertThat(bucket.valuesSmallerThan("1"), is(arrayOf()));
     }
 
+    @Test
+    public void shouldReturnValuesGreaterThanAKey() {
+        SortedBucket<String, String> bucket = bucketOfSize(1);
+        bucket.put("3", "three");
+        bucket.put("5", "five");
+        bucket.put("2", "two");
+        bucket.put("6", "six");
+        bucket.put("4", "four");
+
+        assertThat(bucket.valuesGreaterThan("2"), is(arrayOf("three", "four", "five", "six")));
+        assertThat(bucket.valuesGreaterThan("5"), is(arrayOf("six")));
+        assertThat(bucket.valuesGreaterThan("6"), is(arrayOf()));
+        assertThat(bucket.valuesGreaterThan("7"), is(arrayOf()));
+        assertThat(bucket.valuesGreaterThan("1"), is(arrayOf("two","three", "four", "five", "six")));
+    }
+
     private Object[] arrayOf(Object...values) {
         return values;
     }

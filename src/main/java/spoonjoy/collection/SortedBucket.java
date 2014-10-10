@@ -92,4 +92,15 @@ public class SortedBucket<K extends Comparable, V> {
         }
         return copyOfRange(mappings, fromIndex, toIndex-1);
     }
+
+    public Object[] valuesGreaterThan(K key) {
+        int fromIndex = size();
+        int toIndex = size() -1;
+        for (int i = 0; i < size(); i++) {
+            if (!mappings[i].keySmallerThan(key) && !mappings[i].keyEquals(key) && i < fromIndex) {
+                fromIndex = i;
+            }
+        }
+        return copyOfRange(mappings, fromIndex, toIndex);
+    }
 }
