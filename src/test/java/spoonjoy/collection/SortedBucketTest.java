@@ -3,6 +3,7 @@ package spoonjoy.collection;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -94,6 +95,18 @@ public class SortedBucketTest {
         assertThat(bucket.valuesGreaterThan("6"), is(arrayOf()));
         assertThat(bucket.valuesGreaterThan("7"), is(arrayOf()));
         assertThat(bucket.valuesGreaterThan("1"), is(arrayOf("two","three", "four", "five", "six")));
+    }
+
+    @Test
+    public void shouldReturnKeyValues(){
+        SortedBucket<String, String> bucket = bucketOfSize(2);
+        bucket.put("3", "bad-value");
+        bucket.put("3", "three");
+        bucket.put("5", "five");
+
+        assertThat(bucket.get("3"), is("three"));
+        assertThat(bucket.get("5"), is("five"));
+        assertThat(bucket.get("6"), is(nullValue()));
     }
 
     private Object[] arrayOf(Object...values) {

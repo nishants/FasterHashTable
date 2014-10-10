@@ -103,4 +103,11 @@ public class SortedBucket<K extends Comparable, V> {
         }
         return copyOfRange(mappings, fromIndex, toIndex);
     }
+
+    public V get(K key) {
+        for (int i = 0; i <size(); i++) {
+            if(mappings[i].keyEquals(key)) return mappings[i].getValue();
+        }
+        return null;
+    }
 }
