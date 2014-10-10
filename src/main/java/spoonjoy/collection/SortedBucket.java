@@ -42,12 +42,12 @@ public class SortedBucket<K extends Comparable, V> {
         return new Mapping(key, value);
     }
 
-    public V[] values() {
+    public Object[] values() {
         Object[] keys = new Object[size()];
         for (int i = 0; i < size(); i++) {
             if(mappings[i] != null)keys[i] = (mappings[i].getValue());
         }
-        return (V[])keys;
+        return keys;
     }
 
     private int size() {

@@ -25,14 +25,13 @@ public class SortedBucketTest {
         bucket.put("4", "four");
         bucket.put("2", "two");
         
-        assertThat(bucket.values(), is(new String[]{"one","two","three", "four"}));
+        assertThat(bucket.values(), is(new Object[]{"one","two","three", "four"}));
     }
 
     @Test
     public void shouldReturnEmptyArayIfNoValuesAdded(){
-        assertThat(bucketOfSize(4).values(), is(new String[0]));
+        assertThat(bucketOfSize(4).values(), is(new Object[0]));
     }
-
 
     @Test
     public void shouldResize(){
@@ -43,7 +42,7 @@ public class SortedBucketTest {
         bucket.put("4", "four");
         bucket.put("2", "two");
 
-        assertThat(bucket.values(), is(new String[]{"one","two","three", "four", "five"}));
+        assertThat(bucket.values(), is(new Object[]{"one","two","three", "four", "five"}));
 
     }
     private SortedBucket<String, String> bucketOfSize(int size) {
