@@ -17,7 +17,7 @@ public class MappingTest {
     @Test
     public void testKeyIsSmaller() throws Exception {
         Mapping<Integer, String> one = new Mapping<Integer, String>(1,"one");
-        assertThat(one.keyIsSmallerTo(2), is(true));
+        assertThat(one.keySmallerThan(2), is(true));
     }
     @Test
     public void testHasKey() throws Exception {

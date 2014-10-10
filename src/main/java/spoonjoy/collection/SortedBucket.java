@@ -3,7 +3,7 @@ package spoonjoy.collection;
 import java.util.Arrays;
 
 public class SortedBucket<K extends Comparable, V> {
-    private Mapping[] mappings;
+    private Mapping<K,V>[] mappings;
 
     protected SortedBucket(int size) {
         mappings = new Mapping[size];
@@ -18,7 +18,7 @@ public class SortedBucket<K extends Comparable, V> {
                 mappings[index] = mappingOf(key, value);
                 return false;
             }
-            if (!mappings[index].keyIsSmallerTo(key)) {
+            if (!mappings[index].keySmallerThan(key)) {
                 insert(mappingOf(key, value), index);
                 return true;
             }
@@ -63,10 +63,10 @@ public class SortedBucket<K extends Comparable, V> {
         int fromIndex = mappings.length;
         int toIndex = mappings.length;
         for (int i = 0; i < size(); i++) {
-            if (!mappings[i].keyIsSmallerTo(fromKey) && i < fromIndex) {
+            if (!mappings[i].keySmallerThan(fromKey) && i < fromIndex) {
                 fromIndex = i;
             }
-            if (mappings[i].keyIsSmallerTo(toKey) || mappings[i].keyEquals(toKey)) {
+            if (mappings[i].keySmallerThan(toKey) || mappings[i].keyEquals(toKey)) {
                 toIndex = i;
             }
         }
@@ -82,5 +82,14 @@ public class SortedBucket<K extends Comparable, V> {
             result[i - fromIndex] = mappings[i].getValue();
         }
         return result;
+    }
+
+    public Object[] valuesSmallerThan(K key) {
+        int fromIndex = 0;
+        int toIndex = 0;
+        while (toIndex < size() && mappings[toIndex].keySmallerThan(key)){
+            toIndex++;
+        }
+        return copyOfRange(mappings, fromIndex, toIndex-1);
     }
 }

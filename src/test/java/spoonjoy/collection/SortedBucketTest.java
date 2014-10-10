@@ -62,7 +62,22 @@ public class SortedBucketTest {
         assertThat(bucket.valuesBetween("1", "2"), is(arrayOf( "two")));
         assertThat(bucket.valuesBetween("0", "1"), is(arrayOf()));
         assertThat(bucket.valuesBetween("7", "8"), is(arrayOf()));
+    }
 
+    @Test
+    public void shouldReturnValuesSmallerThanAKey() {
+        SortedBucket<String, String> bucket = bucketOfSize(1);
+        bucket.put("3", "three");
+        bucket.put("5", "five");
+        bucket.put("2", "two");
+        bucket.put("6", "six");
+        bucket.put("4", "four");
+
+        assertThat(bucket.valuesSmallerThan("6"), is(arrayOf("two","three", "four", "five")));
+        assertThat(bucket.valuesSmallerThan("2"), is(arrayOf()));
+        assertThat(bucket.valuesSmallerThan("3"), is(arrayOf("two")));
+        assertThat(bucket.valuesSmallerThan("7"), is(arrayOf("two","three", "four", "five", "six")));
+        assertThat(bucket.valuesSmallerThan("1"), is(arrayOf()));
     }
 
     private Object[] arrayOf(Object...values) {

@@ -23,7 +23,7 @@ public class Mapping<K extends Comparable, V> {
         return this.key.compareTo(that.key) < 0;
     }
 
-    public boolean keyIsSmallerTo(K key) {
+    public boolean keySmallerThan(K key) {
         return this.key.compareTo(key) < 0;
     }
 }
