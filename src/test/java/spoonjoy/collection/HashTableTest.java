@@ -63,6 +63,22 @@ public class HashTableTest {
         assertThat(hashTable.lessThan("1"), is(arrayOf()));
     }
 
+
+    @Test
+    public void testGreaterThan() {
+        hashTable.put("3", "three");
+        hashTable.put("5", "five");
+        hashTable.put("2", "two");
+        hashTable.put("6", "six");
+        hashTable.put("4", "four");
+
+        assertThat(hashTable.greaterThan("2"), is(arrayOf("three", "four", "five", "six")));
+        assertThat(hashTable.greaterThan("5"), is(arrayOf("six")));
+        assertThat(hashTable.greaterThan("6"), is(arrayOf()));
+        assertThat(hashTable.greaterThan("7"), is(arrayOf()));
+        assertThat(hashTable.greaterThan("1"), is(arrayOf("two","three", "four", "five", "six")));
+    }
+
     private <T> T[] arrayOf(T...values) {
         return values;
     }

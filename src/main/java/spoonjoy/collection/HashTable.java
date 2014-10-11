@@ -19,16 +19,17 @@ public class HashTable<K extends Comparable, V> {
         return bucketFor(key).put(key, value);
     }
 
-    private SortedBucket<K, V> bucketFor(K key) {
-        int bucketIndex = abs(key.hashCode()) % sortedBuckets.length;
-        if(sortedBuckets[bucketIndex] == null) sortedBuckets[bucketIndex]
-                = new SortedBucket<K,V>(INITIAL_BUCKET_SIZE);
-        return sortedBuckets[bucketIndex];
-    }
-
     public V get(K key) {
         return bucketFor(key).get(key);
     }
+
+    public V[] valuesBetween(K fromKey, K toKey) {
+        Object[][] values = new Object[sortedBuckets.length][];
+        for (int i = 0; i < sortedBuckets.length; i++) {
+            SortedBucket<K, V> bucket = sortedBuckets[i];
+            if(bucket !=null) values[i] = bucket.valuesBetween(fromKey, toKey);
+        }
+        return (V[])flattened(values);    }
 
     public V[] lessThan(K key) {
         Object[][] values = new Object[sortedBuckets.length][];
@@ -37,6 +38,20 @@ public class HashTable<K extends Comparable, V> {
             if(bucket !=null) values[i] = bucket.valuesSmallerThan(key);
         }
         return (V[])flattened(values);
+    }
+    public V[] greaterThan(K key) {
+        Object[][] values = new Object[sortedBuckets.length][];
+        for (int i = 0; i < sortedBuckets.length; i++) {
+            SortedBucket<K, V> bucket = sortedBuckets[i];
+            if(bucket !=null) values[i] = bucket.valuesGreaterThan(key);
+        }
+        return (V[])flattened(values);    }
+
+    private SortedBucket<K, V> bucketFor(K key) {
+        int bucketIndex = abs(key.hashCode()) % sortedBuckets.length;
+        if(sortedBuckets[bucketIndex] == null) sortedBuckets[bucketIndex]
+                = new SortedBucket<K,V>(INITIAL_BUCKET_SIZE);
+        return sortedBuckets[bucketIndex];
     }
 
     private static Object[] flattened(Object[][] values) {
@@ -57,12 +72,4 @@ public class HashTable<K extends Comparable, V> {
         }
         return result;
     }
-
-    public V[] valuesBetween(K fromKey, K toKey) {
-        Object[][] values = new Object[sortedBuckets.length][];
-        for (int i = 0; i < sortedBuckets.length; i++) {
-            SortedBucket<K, V> bucket = sortedBuckets[i];
-            if(bucket !=null) values[i] = bucket.valuesBetween(fromKey, toKey);
-        }
-        return (V[])flattened(values);    }
 }

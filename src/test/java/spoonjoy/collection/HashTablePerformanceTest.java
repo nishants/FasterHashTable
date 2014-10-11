@@ -12,10 +12,10 @@ import static org.junit.Assert.assertThat;
 public class HashTablePerformanceTest {
     @Test
     public void testGetPut() {
-        perform(9999);
-        perform(9999);
-        perform(9999);
-        perform(9999);
+        perform(99999);
+        perform(99999);
+        perform(99999);
+        perform(99999);
     }
 
     private void perform(int count) {
