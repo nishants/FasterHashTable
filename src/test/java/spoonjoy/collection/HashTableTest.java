@@ -63,7 +63,6 @@ public class HashTableTest {
         assertThat(hashTable.lessThan("1"), is(arrayOf()));
     }
 
-
     @Test
     public void testGreaterThan() {
         hashTable.put("3", "three");

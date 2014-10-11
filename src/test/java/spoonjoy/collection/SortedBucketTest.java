@@ -19,6 +19,13 @@ public class SortedBucketTest {
     }
 
     @Test
+    public void testExists() throws Exception {
+        SortedBucket<String, String> bucket = bucketOfSize(3);
+        bucket.put("one", "value");
+        assertTrue(bucket.exists("one"));
+    }
+
+    @Test
     public void shouldReturnSortedKeys(){
         SortedBucket<String, String> bucket = bucketOfSize(4);
         bucket.put("3", "three");

@@ -28,35 +28,12 @@ public class SortedBucket<K extends Comparable, V> {
         return true;
     }
 
-    private void resize() {
-        mappings = Arrays.copyOf(mappings, mappings.length * 2);
-    }
-
-    private void insert(Mapping item, int atIndex) {
-        for (int i = size(); i > atIndex; i--) {
-            mappings[i] = mappings[i - 1];
-        }
-        mappings[atIndex] = item;
-    }
-
-    private Mapping mappingOf(K key, V value) {
-        return new Mapping(key, value);
-    }
-
     public synchronized Object[] values() {
         Object[] keys = new Object[size()];
         for (int i = 0; i < size(); i++) {
             if (mappings[i] != null) keys[i] = (mappings[i].getValue());
         }
         return keys;
-    }
-
-    private int size() {
-        //TODO : update size on adding element, don't calculate
-        for (int i = 0; i < mappings.length; i++) {
-            if (mappings[i] == null) return i;
-        }
-        return mappings.length;
     }
 
     public synchronized Object[] valuesBetween(K fromKey, K toKey) {
@@ -71,17 +48,6 @@ public class SortedBucket<K extends Comparable, V> {
             }
         }
         return copyOfRange(mappings, fromIndex, toIndex);
-    }
-
-    private Object[] copyOfRange(Mapping[] mappings, int fromIndex, int toIndex) {
-        if (toIndex == mappings.length) return new Object[0];
-        if (toIndex < fromIndex) return new Object[0];
-
-        Object[] result = new Object[toIndex - fromIndex + 1];
-        for (int i = fromIndex; i <= toIndex; i++) {
-            result[i - fromIndex] = mappings[i].getValue();
-        }
-        return result;
     }
 
     public synchronized Object[] valuesSmallerThan(K key) {
@@ -109,5 +75,43 @@ public class SortedBucket<K extends Comparable, V> {
             if(mappings[i].keyEquals(key)) return mappings[i].getValue();
         }
         return null;
+    }
+
+    public boolean exists(K key) {
+        return get(key) != null;
+    }
+
+    private void resize() {
+        mappings = Arrays.copyOf(mappings, mappings.length * 2);
+    }
+
+    private Object[] copyOfRange(Mapping[] mappings, int fromIndex, int toIndex) {
+        if (toIndex == mappings.length) return new Object[0];
+        if (toIndex < fromIndex) return new Object[0];
+
+        Object[] result = new Object[toIndex - fromIndex + 1];
+        for (int i = fromIndex; i <= toIndex; i++) {
+            result[i - fromIndex] = mappings[i].getValue();
+        }
+        return result;
+    }
+
+    private int size() {
+        //TODO : update size on adding element, don't calculate
+        for (int i = 0; i < mappings.length; i++) {
+            if (mappings[i] == null) return i;
+        }
+        return mappings.length;
+    }
+
+    private void insert(Mapping item, int atIndex) {
+        for (int i = size(); i > atIndex; i--) {
+            mappings[i] = mappings[i - 1];
+        }
+        mappings[atIndex] = item;
+    }
+
+    private Mapping mappingOf(K key, V value) {
+        return new Mapping(key, value);
     }
 }
