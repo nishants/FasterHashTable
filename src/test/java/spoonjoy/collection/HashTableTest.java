@@ -33,7 +33,24 @@ public class HashTableTest {
     }
 
     @Test
-    public void shouldGetValueInRange() {
+    public void testBetween() {
+        hashTable.put("3", "three");
+        hashTable.put("5", "five");
+        hashTable.put("2", "two");
+        hashTable.put("6", "six");
+        hashTable.put("4", "four");
+        assertThat(hashTable.valuesBetween("3", "6"), is(arrayOf("three", "four", "five", "six")));
+        assertThat(hashTable.valuesBetween("1", "6"), is(arrayOf("two","three", "four", "five", "six")));
+        assertThat(hashTable.valuesBetween("1", "7"), is(arrayOf("two","three", "four", "five", "six")));
+        assertThat(hashTable.valuesBetween("5", "7"), is(arrayOf("five", "six")));
+        assertThat(hashTable.valuesBetween("6", "7"), is(arrayOf( "six")));
+        assertThat(hashTable.valuesBetween("1", "2"), is(arrayOf( "two")));
+        assertThat(hashTable.valuesBetween("0", "1"), is(arrayOf()));
+        assertThat(hashTable.valuesBetween("7", "8"), is(arrayOf()));
+    }
+
+    @Test
+    public void testLessThan() {
         hashTable.put("3", "three");
         hashTable.put("5", "five");
         hashTable.put("2", "two");

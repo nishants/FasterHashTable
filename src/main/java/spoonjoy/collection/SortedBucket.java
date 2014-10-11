@@ -9,7 +9,7 @@ public class SortedBucket<K extends Comparable, V> {
         mappings = new Mapping[size];
     }
 
-    public boolean put(K key, V value) {
+    public synchronized boolean put(K key, V value) {
         //TODO use binary tree to store mappings
         if (mappings[mappings.length - 1] != null) resize();
         int index = 0;
@@ -43,7 +43,7 @@ public class SortedBucket<K extends Comparable, V> {
         return new Mapping(key, value);
     }
 
-    public Object[] values() {
+    public synchronized Object[] values() {
         Object[] keys = new Object[size()];
         for (int i = 0; i < size(); i++) {
             if (mappings[i] != null) keys[i] = (mappings[i].getValue());
@@ -59,7 +59,7 @@ public class SortedBucket<K extends Comparable, V> {
         return mappings.length;
     }
 
-    public Object[] valuesBetween(K fromKey, K toKey) {
+    public synchronized Object[] valuesBetween(K fromKey, K toKey) {
         int fromIndex = mappings.length;
         int toIndex = mappings.length;
         for (int i = 0; i < size(); i++) {
@@ -84,7 +84,7 @@ public class SortedBucket<K extends Comparable, V> {
         return result;
     }
 
-    public Object[] valuesSmallerThan(K key) {
+    public synchronized Object[] valuesSmallerThan(K key) {
         int fromIndex = 0;
         int toIndex = 0;
         while (toIndex < size() && mappings[toIndex].keySmallerThan(key)){
@@ -93,7 +93,7 @@ public class SortedBucket<K extends Comparable, V> {
         return copyOfRange(mappings, fromIndex, toIndex-1);
     }
 
-    public Object[] valuesGreaterThan(K key) {
+    public synchronized Object[] valuesGreaterThan(K key) {
         int fromIndex = size();
         int toIndex = size() -1;
         for (int i = 0; i < size(); i++) {
@@ -104,7 +104,7 @@ public class SortedBucket<K extends Comparable, V> {
         return copyOfRange(mappings, fromIndex, toIndex);
     }
 
-    public V get(K key) {
+    public synchronized V get(K key) {
         for (int i = 0; i <size(); i++) {
             if(mappings[i].keyEquals(key)) return mappings[i].getValue();
         }

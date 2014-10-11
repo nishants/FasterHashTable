@@ -39,7 +39,7 @@ public class HashTable<K extends Comparable, V> {
         return (V[])flattened(values);
     }
 
-    public static Object[] flattened(Object[][] values) {
+    private static Object[] flattened(Object[][] values) {
         int totalElements = 0;
         for (int i = 0; i < values.length; i++) {
             if (values[i] != null && values[i].length != 0){
@@ -57,4 +57,12 @@ public class HashTable<K extends Comparable, V> {
         }
         return result;
     }
+
+    public V[] valuesBetween(K fromKey, K toKey) {
+        Object[][] values = new Object[sortedBuckets.length][];
+        for (int i = 0; i < sortedBuckets.length; i++) {
+            SortedBucket<K, V> bucket = sortedBuckets[i];
+            if(bucket !=null) values[i] = bucket.valuesBetween(fromKey, toKey);
+        }
+        return (V[])flattened(values);    }
 }
