@@ -76,4 +76,9 @@ public class HashTable<K extends Comparable, V> {
     public boolean exists(K key) {
         return get(key) != null;
     }
+
+    public boolean delete(K key) {
+        SortedBucket<K, V> bucket = sortedBuckets[abs(key.hashCode()) % sortedBuckets.length];
+        return bucket == null ? false : bucket.delete(key);
+    }
 }

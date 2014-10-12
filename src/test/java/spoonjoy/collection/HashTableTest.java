@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
 
 public class HashTableTest {
@@ -26,6 +27,22 @@ public class HashTableTest {
     public void testExists() throws Exception {
         hashTable.put("one", "value");
         assertTrue(hashTable.exists("one"));
+    }
+
+    @Test
+    public void testDeleteKeys(){
+        hashTable.put("3", "three");
+        hashTable.put("1", "one");
+        hashTable.put("4", "four");
+        hashTable.put("2", "two");
+
+        assertThat(hashTable.delete("2"), is(true));
+        assertThat(hashTable.get("2"), is(nullValue()));
+        assertThat(hashTable.get("1"), is("one"));
+        assertThat(hashTable.get("3"), is("three"));
+        assertThat(hashTable.get("4"), is("four"));
+
+        assertThat(hashTable.delete("invalid key"), is(false));
     }
 
     @Test

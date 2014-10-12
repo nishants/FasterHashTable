@@ -3,7 +3,7 @@ package spoonjoy.collection;
 import java.util.Arrays;
 
 public class SortedBucket<K extends Comparable, V> {
-    private Mapping<K,V>[] mappings;
+    private Mapping<K, V>[] mappings;
 
     protected SortedBucket(int size) {
         mappings = new Mapping[size];
@@ -53,15 +53,15 @@ public class SortedBucket<K extends Comparable, V> {
     public synchronized Object[] valuesSmallerThan(K key) {
         int fromIndex = 0;
         int toIndex = 0;
-        while (toIndex < size() && mappings[toIndex].keySmallerThan(key)){
+        while (toIndex < size() && mappings[toIndex].keySmallerThan(key)) {
             toIndex++;
         }
-        return copyOfRange(mappings, fromIndex, toIndex-1);
+        return copyOfRange(mappings, fromIndex, toIndex - 1);
     }
 
     public synchronized Object[] valuesGreaterThan(K key) {
         int fromIndex = size();
-        int toIndex = size() -1;
+        int toIndex = size() - 1;
         for (int i = 0; i < size(); i++) {
             if (!mappings[i].keySmallerThan(key) && !mappings[i].keyEquals(key) && i < fromIndex) {
                 fromIndex = i;
@@ -71,8 +71,8 @@ public class SortedBucket<K extends Comparable, V> {
     }
 
     public synchronized V get(K key) {
-        for (int i = 0; i <size(); i++) {
-            if(mappings[i].keyEquals(key)) return mappings[i].getValue();
+        for (int i = 0; i < size(); i++) {
+            if (mappings[i].keyEquals(key)) return mappings[i].getValue();
         }
         return null;
     }
@@ -110,4 +110,22 @@ public class SortedBucket<K extends Comparable, V> {
     private Mapping mappingOf(K key, V value) {
         return new Mapping(key, value);
     }
+
+    public boolean delete(K key) {
+        for (int index = 0; index < size(); index++) {
+            if (mappings[index].keyEquals(key)) {
+                deleteAtIndex(index);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void deleteAtIndex(int index) {
+        for (int i = index; i < size() - 1; i++) {
+            mappings[i] = mappings[i + 1];
+        }
+        mappings[size()-1] = null;
+    }
 }
+

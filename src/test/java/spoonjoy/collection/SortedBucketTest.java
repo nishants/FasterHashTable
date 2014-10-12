@@ -44,7 +44,20 @@ public class SortedBucketTest {
         bucket.put("2", "two");
 
         assertThat(bucket.values(), is(arrayOf("one","two","three", "four", "five")));
+    }
 
+    @Test
+    public void testDeleteKeys(){
+        SortedBucket<String, String> bucket = bucketOfSize(4);
+        bucket.put("3", "three");
+        bucket.put("1", "one");
+        bucket.put("4", "four");
+        bucket.put("2", "two");
+
+        assertThat(bucket.delete("2"), is(true));
+        assertThat(bucket.values(), is(arrayOf("one", "three", "four")));
+        assertThat(bucket.delete("2"), is(false));
+        assertThat(bucket.values(), is(arrayOf("one", "three", "four")));
     }
 
     @Test
