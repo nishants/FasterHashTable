@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 class Bucket<K extends Comparable, V> {
     private Mapping<K, V>[] mappings;
+    private int size;
 
     protected Bucket(int size) {
         mappings = new Mapping[size];
@@ -20,11 +21,13 @@ class Bucket<K extends Comparable, V> {
             }
             if (!mappings[index].keySmallerThan(key)) {
                 insert(mappingOf(key, value), index);
+                size++;
                 return true;
             }
             index++;
         }
         mappings[index] = mappingOf(key, value);
+        size++;
         return true;
     }
 
@@ -77,6 +80,17 @@ class Bucket<K extends Comparable, V> {
         return null;
     }
 
+    public synchronized boolean delete(K key) {
+        for (int index = 0; index < size(); index++) {
+            if (mappings[index].keyEquals(key)) {
+                deleteAtIndex(index);
+                size--;
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void resize() {
         mappings = Arrays.copyOf(mappings, mappings.length * 2);
     }
@@ -93,11 +107,7 @@ class Bucket<K extends Comparable, V> {
     }
 
     private int size() {
-        //TODO : update size on adding element, don't calculate
-        for (int i = 0; i < mappings.length; i++) {
-            if (mappings[i] == null) return i;
-        }
-        return mappings.length;
+        return size;
     }
 
     private void insert(Mapping item, int atIndex) {
@@ -109,16 +119,6 @@ class Bucket<K extends Comparable, V> {
 
     private Mapping mappingOf(K key, V value) {
         return new Mapping(key, value);
-    }
-
-    public boolean delete(K key) {
-        for (int index = 0; index < size(); index++) {
-            if (mappings[index].keyEquals(key)) {
-                deleteAtIndex(index);
-                return true;
-            }
-        }
-        return false;
     }
 
     private void deleteAtIndex(int index) {
