@@ -8,11 +8,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class SortedSetTest {
+public class BucketTest {
 
     @Test
     public void testPut() throws Exception {
-        SortedSet<String, String> bucket = bucketOfSize(3);
+        Bucket<String, String> bucket = bucketOfSize(3);
         assertTrue(bucket.put("one", "value"));
         assertFalse(bucket.put("one", "new-value"));
         assertTrue(bucket.put("two", "value"));
@@ -20,7 +20,7 @@ public class SortedSetTest {
 
     @Test
     public void shouldReturnSortedKeys(){
-        SortedSet<String, String> bucket = bucketOfSize(4);
+        Bucket<String, String> bucket = bucketOfSize(4);
         bucket.put("3", "three");
         bucket.put("1", "one");
         bucket.put("4", "four");
@@ -36,7 +36,7 @@ public class SortedSetTest {
 
     @Test
     public void shouldResize(){
-        SortedSet<String, String> bucket = bucketOfSize(1);
+        Bucket<String, String> bucket = bucketOfSize(1);
         bucket.put("3", "three");
         bucket.put("1", "one");
         bucket.put("5", "five");
@@ -48,7 +48,7 @@ public class SortedSetTest {
 
     @Test
     public void testDeleteKeys(){
-        SortedSet<String, String> bucket = bucketOfSize(4);
+        Bucket<String, String> bucket = bucketOfSize(4);
         bucket.put("3", "three");
         bucket.put("1", "one");
         bucket.put("4", "four");
@@ -62,7 +62,7 @@ public class SortedSetTest {
 
     @Test
     public void shouldReturnValuesInRangeByKey() {
-        SortedSet<String, String> bucket = bucketOfSize(1);
+        Bucket<String, String> bucket = bucketOfSize(1);
         bucket.put("3", "three");
         bucket.put("5", "five");
         bucket.put("2", "two");
@@ -80,7 +80,7 @@ public class SortedSetTest {
 
     @Test
     public void shouldReturnValuesSmallerThanAKey() {
-        SortedSet<String, String> bucket = bucketOfSize(1);
+        Bucket<String, String> bucket = bucketOfSize(1);
         bucket.put("3", "three");
         bucket.put("5", "five");
         bucket.put("2", "two");
@@ -96,7 +96,7 @@ public class SortedSetTest {
 
     @Test
     public void shouldReturnValuesGreaterThanAKey() {
-        SortedSet<String, String> bucket = bucketOfSize(1);
+        Bucket<String, String> bucket = bucketOfSize(1);
         bucket.put("3", "three");
         bucket.put("5", "five");
         bucket.put("2", "two");
@@ -112,7 +112,7 @@ public class SortedSetTest {
 
     @Test
     public void shouldReturnKeyValues(){
-        SortedSet<String, String> bucket = bucketOfSize(2);
+        Bucket<String, String> bucket = bucketOfSize(2);
         bucket.put("3", "bad-value");
         bucket.put("3", "three");
         bucket.put("5", "five");
@@ -126,7 +126,7 @@ public class SortedSetTest {
         return values;
     }
 
-    private SortedSet<String, String> bucketOfSize(int size) {
-        return new SortedSet<String, String>(size);
+    private Bucket<String, String> bucketOfSize(int size) {
+        return new Bucket<String, String>(size);
     }
 }

@@ -3,7 +3,7 @@ package spoonjoy.collection;
 import static java.lang.Math.abs;
 
 public class HashTable<K extends Comparable, V> {
-    private SortedSet<K, V>[] buckets;
+    private Bucket<K, V>[] buckets;
     private static final int DEFAULT_TABLE_SIZE = 999;
     private static final int INITIAL_BUCKET_SIZE = 2;
 
@@ -12,7 +12,7 @@ public class HashTable<K extends Comparable, V> {
     }
 
     public HashTable(int size) {
-        buckets = new SortedSet[size];
+        buckets = new Bucket[size];
     }
 
     public boolean put(K key, V value) {
@@ -26,7 +26,7 @@ public class HashTable<K extends Comparable, V> {
     public V[] valuesBetween(K fromKey, K toKey) {
         Object[][] values = new Object[buckets.length][];
         for (int i = 0; i < buckets.length; i++) {
-            SortedSet<K, V> bucket = buckets[i];
+            Bucket<K, V> bucket = buckets[i];
             if(bucket !=null) values[i] = bucket.valuesBetween(fromKey, toKey);
         }
         return (V[])flattened(values);    }
@@ -34,7 +34,7 @@ public class HashTable<K extends Comparable, V> {
     public V[] lessThan(K key) {
         Object[][] values = new Object[buckets.length][];
         for (int i = 0; i < buckets.length; i++) {
-            SortedSet<K, V> bucket = buckets[i];
+            Bucket<K, V> bucket = buckets[i];
             if(bucket !=null) values[i] = bucket.valuesSmallerThan(key);
         }
         return (V[])flattened(values);
@@ -42,15 +42,15 @@ public class HashTable<K extends Comparable, V> {
     public V[] greaterThan(K key) {
         Object[][] values = new Object[buckets.length][];
         for (int i = 0; i < buckets.length; i++) {
-            SortedSet<K, V> bucket = buckets[i];
+            Bucket<K, V> bucket = buckets[i];
             if(bucket !=null) values[i] = bucket.valuesGreaterThan(key);
         }
         return (V[])flattened(values);    }
 
-    private SortedSet<K, V> bucketFor(K key) {
+    private Bucket<K, V> bucketFor(K key) {
         int bucketIndex = abs(key.hashCode()) % buckets.length;
         if(buckets[bucketIndex] == null) buckets[bucketIndex]
-                = new SortedSet<K,V>(INITIAL_BUCKET_SIZE);
+                = new Bucket<K,V>(INITIAL_BUCKET_SIZE);
         return buckets[bucketIndex];
     }
 
@@ -78,7 +78,7 @@ public class HashTable<K extends Comparable, V> {
     }
 
     public boolean delete(K key) {
-        SortedSet<K, V> bucket = buckets[abs(key.hashCode()) % buckets.length];
+        Bucket<K, V> bucket = buckets[abs(key.hashCode()) % buckets.length];
         return bucket == null ? false : bucket.delete(key);
     }
 }

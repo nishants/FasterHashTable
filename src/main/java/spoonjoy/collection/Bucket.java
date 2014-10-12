@@ -2,10 +2,10 @@ package spoonjoy.collection;
 
 import java.util.Arrays;
 
-public class SortedSet<K extends Comparable, V> {
+class Bucket<K extends Comparable, V> {
     private Mapping<K, V>[] mappings;
 
-    protected SortedSet(int size) {
+    protected Bucket(int size) {
         mappings = new Mapping[size];
     }
 
