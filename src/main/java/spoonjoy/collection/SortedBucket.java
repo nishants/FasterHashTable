@@ -77,10 +77,6 @@ public class SortedBucket<K extends Comparable, V> {
         return null;
     }
 
-    public boolean exists(K key) {
-        return get(key) != null;
-    }
-
     private void resize() {
         mappings = Arrays.copyOf(mappings, mappings.length * 2);
     }

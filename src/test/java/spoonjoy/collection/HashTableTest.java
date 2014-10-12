@@ -23,6 +23,12 @@ public class HashTableTest {
     }
 
     @Test
+    public void testExists() throws Exception {
+        hashTable.put("one", "value");
+        assertTrue(hashTable.exists("one"));
+    }
+
+    @Test
     public void shouldGetValue() {
         hashTable.put("1", "bad-value");
         hashTable.put("1", "one");

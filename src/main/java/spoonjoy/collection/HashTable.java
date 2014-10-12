@@ -72,4 +72,8 @@ public class HashTable<K extends Comparable, V> {
         }
         return result;
     }
+
+    public boolean exists(K key) {
+        return get(key) != null;
+    }
 }
