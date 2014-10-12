@@ -7,7 +7,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class Mapping<K extends Comparable, V> {
+class Mapping<K extends Comparable, V> {
     private K key;
     private V value;
 
